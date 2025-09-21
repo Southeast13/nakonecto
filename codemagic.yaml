@@ -31,7 +31,6 @@ workflows:
       - app/build/outputs/**/*.aab
 
     cache:
-      key: gradle-cache
       paths:
         - $HOME/.gradle/caches
         - $HOME/.gradle/wrapper
