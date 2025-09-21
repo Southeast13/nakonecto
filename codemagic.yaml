@@ -34,3 +34,39 @@ workflows:
       paths:
         - .gradle/caches/
         - .gradle/wrapper/
+workflows:
+  android-build:
+    name: Android Debug+Release Build
+    max_build_duration: 90
+    environment:
+      java: 17
+      vars:
+        ANDROID_SDK: "android-34"
+    scripts:
+      - name: Prepare Gradle
+        script: |
+          set -e
+          cd $CM_BUILD_DIR
+          chmod +x ./gradlew || true
+          echo "Gradle ready"
+
+      - name: Build Debug APK
+        script: |
+          set -e
+          cd $CM_BUILD_DIR
+          ./gradlew assembleDebug --info
+
+      - name: Build Release APK
+        script: |
+          set -e
+          cd $CM_BUILD_DIR
+          ./gradlew assembleRelease --info
+
+    artifacts:
+      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
+
+    cache:
+      paths:
+        - .gradle/caches/
+        - .gradle/wrapper/
