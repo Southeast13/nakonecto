@@ -1,0 +1,35 @@
+workflows:
+  android-build:
+    name: Android Debug+Release Build
+    max_build_duration: 90
+    environment:
+      java: 17
+      android: android-34
+    scripts:
+      - name: Prepare Gradle
+        script: |
+          set -e
+          echo "Looking for gradle..."
+          if [ -x "./gradlew" ]; then
+            echo "Using project gradlew"
+            chmod +x ./gradlew || true
+            export GRADLE_CMD="./gradlew"
+          elif command -v gradle >/dev/null 2>&1; then
+            echo "Using system gradle"
+            export GRADLE_CMD="gradle"
+          else
+            echo "Gradle not found!"
+            exit 1
+          fi
+
+      - name: Build Debug APK
+        script: |
+          $GRADLE_CMD assembleDebug
+
+      - name: Build Release APK
+        script: |
+          $GRADLE_CMD assembleRelease
+
+    artifacts:
+      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
