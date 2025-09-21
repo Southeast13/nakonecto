@@ -26,11 +26,18 @@ workflows:
 
       - name: Build Debug APK
         script: |
-          $GRADLE_CMD assembleDebug
+          set -e
+          cd $CM_BUILD_DIR  # переменная Codemagic, указывает на корень репозитория
+          chmod +x ./gradlew
+          ./gradlew assembleDebug
 
       - name: Build Release APK
         script: |
-          $GRADLE_CMD assembleRelease
+          set -e
+          cd $CM_BUILD_DIR
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
+
 
 
     artifacts:
