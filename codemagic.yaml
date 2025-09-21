@@ -4,7 +4,9 @@ workflows:
     max_build_duration: 90
     environment:
       java: 17
-      android: android-34
+      # android: android-34  <-- это поле нужно убрать
+      vars:
+        ANDROID_SDK: "android-34"  # задаем через переменную
     scripts:
       - name: Prepare Gradle
         script: |
